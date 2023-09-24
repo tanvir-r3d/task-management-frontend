@@ -4,11 +4,13 @@ import UserMultiSelect from "../../../../utility/selects/UserMultiSelect";
 import { useFormik } from "formik";
 import TextEditor from "../../../../utility/TextEditor";
 import StatusSelect from "../../../../utility/selects/StatusSelect";
-import { postTask } from "../../../../actions/taskApiActions";
+import { postTaskComment, getTaskCommentList, putTask } from "../../../../actions/taskApiActions";
 import { toast } from "react-toastify";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
-const TaskEditForm = ({ toggleEditFormModal, editFormModal, taskEdit, editId }) => {
+const TaskEditForm = ({ toggleEditFormModal, editFormModal, taskEdit, editId, loadTaskList }) => {
+    const [commentField, setCommentField] = useState('');
+    const [commentList, setCommentList] = useState([]);
 
     const form = useFormik({
         initialValues: {
@@ -18,11 +20,12 @@ const TaskEditForm = ({ toggleEditFormModal, editFormModal, taskEdit, editId }) 
             assignees: []
         },
         onSubmit: (values, { resetForm }) => {
-            postTask(values)
+            putTask(editId, values)
                 .then(response => {
                     toggleEditFormModal();
                     toast.success(response.message);
                     resetForm();
+                    loadTaskList();
                 })
                 .catch(error => {
                     toast.error("Something went wrong")
@@ -34,6 +37,27 @@ const TaskEditForm = ({ toggleEditFormModal, editFormModal, taskEdit, editId }) 
     useEffect(() => {
         form.setValues({ ...taskEdit });
     }, [taskEdit]);
+
+    const onCommentSubmit = () => {
+        postTaskComment(editId, commentField)
+            .then(response => {
+                fetchComments();
+                setCommentField('');
+            })
+            .catch(error => console.error(error));
+    }
+
+    const fetchComments = () => {
+        getTaskCommentList(editId)
+            .then(response => {
+                setCommentList(response.data);
+            })
+            .catch(error => console.error(error));
+    }
+
+    useEffect(() => {
+        fetchComments();
+    }, [editId]);
 
     return <>
         <Modal isOpen={editFormModal} toggle={toggleEditFormModal} size="xl">
@@ -79,8 +103,36 @@ const TaskEditForm = ({ toggleEditFormModal, editFormModal, taskEdit, editId }) 
                     <div className="col-md-4">
                         Comments
                         <div className="card">
-                            <div className="card-body">
-                                
+                            <div className="card-body" style={{ height: 'fit-content', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
+                                <div style={{ maxHeight: '300px', minHeight: '300px', overflowX: 'hidden' }}>
+                                    {commentList.length > 0
+                                        ? commentList.map((comment, key) => (
+                                            <>
+                                                <p key={key}>
+                                                    <strong>{comment.user.name}</strong>
+                                                    <br />{comment.comment}
+                                                </p>
+                                            </>
+                                        ))
+                                        : <p>Comments will apear hear.</p>
+                                    }
+                                </div>
+                                <div className="row" style={{ paddingTop: '10px' }}>
+                                    <div className="col-md-10">
+                                        <input type="text"
+                                            className="form-control form-control-sm"
+                                            onChange={e => setCommentField(e.target.value)}
+                                            value={commentField}
+                                            onKeyDownCapture={(e) => e.key === 'Enter' && onCommentSubmit()}
+                                        />
+                                    </div>
+                                    <div className="col-md-2 d-flex text-primary align-items-center">
+                                        <i className="far fa-paper-plane"
+                                            onClick={() => onCommentSubmit()}
+                                            style={{ fontSize: '18px', cursor: 'pointer' }}
+                                        />
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

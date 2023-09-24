@@ -40,3 +40,30 @@ export const deleteTask = async id => {
         return Promise.reject(error.data);
     }
 }
+
+export const putTask = async (id, data) => {
+    try {
+        const res = await http.put(`tasks/${id}`, data);
+        return Promise.resolve(res.data);
+    } catch (error) {
+        return Promise.reject(error.data);
+    }
+}
+
+export const getTaskCommentList = async (id) => {
+    try {
+        const res = await http.get(`tasks/${id}/comments`);
+        return Promise.resolve(res.data);
+    } catch (error) {
+        return Promise.reject(error.data);
+    }
+}
+
+export const postTaskComment = async (id, comment) => {
+    try {
+        const res = await http.post(`tasks/${id}/comments`, { comment });
+        return Promise.resolve(res.data);
+    } catch (error) {
+        return Promise.reject(error.data);
+    }
+}   

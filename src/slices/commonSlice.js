@@ -4,6 +4,7 @@ export const commonSlice = createSlice({
     name: 'common',
     initialState: {
         deleteId: '',
+        tableLoading: true,
     },
     reducers: {
         setDeleteId: (state, { payload }) => {
@@ -12,9 +13,12 @@ export const commonSlice = createSlice({
         clearDeleteId: (state) => {
             state.deleteId = '';
         },
+        setTableLoading: (state, { payload }) => {
+            state.tableLoading = payload;
+        }
     }
 });
 
-export const { setDeleteId, clearDeleteId } = commonSlice.actions;
+export const { setDeleteId, clearDeleteId, setTableLoading } = commonSlice.actions;
 
 export default commonSlice.reducer;

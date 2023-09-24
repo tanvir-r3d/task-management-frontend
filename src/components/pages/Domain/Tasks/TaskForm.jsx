@@ -7,7 +7,7 @@ import StatusSelect from "../../../../utility/selects/StatusSelect";
 import { postTask } from "../../../../actions/taskApiActions";
 import { toast } from "react-toastify";
 
-const TaskForm = ({ toggleFormModal, formModal }) => {
+const TaskForm = ({ toggleFormModal, formModal, loadTaskList }) => {
 
     const form = useFormik({
         initialValues: {
@@ -22,6 +22,7 @@ const TaskForm = ({ toggleFormModal, formModal }) => {
                     toggleFormModal();
                     toast.success(response.message);
                     resetForm();
+                    loadTaskList();
                 })
                 .catch(error => {
                     toast.error("Something went wrong")

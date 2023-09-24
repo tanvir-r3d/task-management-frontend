@@ -5,26 +5,12 @@ import TableLoader from "../../../../utility/TableLoader";
 import { generateSL } from "../../../../utility/helpers";
 import DeleteButton from "../../../../utility/DeleteButton";
 import DeleteModal from "../../../../utility/DeleteModal";
+import { useSelector } from "react-redux";
 
-const TaskList = ({ handleRowClick }) => {
-    const [taskList, setTaskList] = useState();
-    const [tableLoading, setTableLoading] = useState(true);
+const TaskList = ({ handleRowClick, loadTaskList }) => {
 
-    const loadTaskList = (pagination) => {
-        const params = { page: pagination?.page ?? 1 };
-        getTaskList(params)
-            .then(response => {
-                setTaskList(response.data);
-                setTableLoading(false);
-            })
-            .catch(error => console.error(error));
-    }
-
-    useEffect(() => {
-        loadTaskList();
-    }, []);
-
-
+    const { taskList } = useSelector(state => state.task);
+    const { tableLoading } = useSelector(state => state.common);
 
     return (<>
         <DeleteModal
@@ -50,16 +36,16 @@ const TaskList = ({ handleRowClick }) => {
                         {taskList?.data && taskList?.data?.length > 0
                             ? taskList.data.map((task, key) => <>
                                 <tr key={key}>
-                                    <td onClick={() => handleRowClick(task.id)}>
+                                    <td style={{ cursor: 'pointer' }} onClick={() => handleRowClick(task.id)}>
                                         {generateSL(taskList.current_page, taskList.per_page, key)}
                                     </td>
-                                    <td onClick={() => handleRowClick(task.id)}>
+                                    <td style={{ cursor: 'pointer' }} onClick={() => handleRowClick(task.id)}>
                                         {task.title}
                                     </td>
-                                    <td onClick={() => handleRowClick(task.id)}>
+                                    <td style={{ cursor: 'pointer' }} onClick={() => handleRowClick(task.id)}>
                                         {task?.assignees?.map(x => x.name)?.join(',')}
                                     </td>
-                                    <td onClick={() => handleRowClick(task.id)}>
+                                    <td style={{ cursor: 'pointer' }} onClick={() => handleRowClick(task.id)}>
                                         <span className="badge" style={{ backgroundColor: task?.status?.color ?? 'blue' }}>
                                             {task?.status?.name}
                                         </span>
