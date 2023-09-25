@@ -19,7 +19,6 @@ const Register = () => {
         validationSchema: Yup.object({
             name: Yup.string().required('Name Is Required'),
             email: Yup.string().email().required('Email Is Required'),
-            national_id: Yup.string().required('National Id Is Required'),
             password: Yup.string().required('Password Is Required'),
         }),
         onSubmit: (values, {resetForm}) => {
@@ -64,24 +63,6 @@ const Register = () => {
                                         <div className="card-body pt-0">
                                             <form className="my-4"
                                                   onSubmit={regForm.handleSubmit}>
-                                                <div className="form-group mb-2">
-                                                    <label className="form-label" htmlFor="national_id">NID</label>
-                                                    <input type="text" className="form-control" id="national_id"
-                                                           onChange={regForm.handleChange}
-                                                           onBlur={regForm.handleBlur}
-                                                           value={regForm.values.national_id}
-                                                           name="national_id" placeholder="Enter Your NID"/>
-
-                                                    <div className="text-danger">
-                                                        {
-                                                            regForm.touched.national_id &&
-                                                            regForm.errors.national_id &&
-                                                            (<div>{regForm.errors.national_id}</div>)
-                                                        }
-                                                    </div>
-
-                                                </div>
-
                                                 <div className="form-group mb-2">
                                                     <label className="form-label" htmlFor="name">Name</label>
                                                     <input type="text" className="form-control" id="name"

@@ -1,7 +1,7 @@
-import { CKEditor } from '@ckeditor/ckeditor5-react';
+import {CKEditor} from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
-const TextEditor = ({ value, onChange }) => {
+const TextEditor = ({value, onChange}) => {
     const editorConfiguration = {
         toolbar: ['heading', '|', 'bold', 'italic', 'bulletedList', 'numberedList', 'blockQuote']
     };
@@ -9,7 +9,7 @@ const TextEditor = ({ value, onChange }) => {
         <CKEditor
             config={editorConfiguration}
             editor={ClassicEditor}
-            data={value}
+            data={value ?? ''}
             onChange={(event, editor) => onChange(editor.getData())}
         />
     </>

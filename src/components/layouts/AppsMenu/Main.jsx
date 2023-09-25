@@ -11,19 +11,11 @@ const Main = () => {
                     <ul className="nav flex-column">
 
                         <li className="nav-item">
-                            <Link className="nav-link" to="/categories">Categories</Link>
+                            <Link className="nav-link" to="/tasks">Task</Link>
                         </li>
 
                         <li className="nav-item">
-                            <Link className="nav-link" to="/add-documents">Add Documents</Link>
-                        </li>
-
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/documents">My Documents</Link>
-                        </li>
-
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/shared">Shared Documents</Link>
+                            <Link className="nav-link" to="/task-statuses">Task Status</Link>
                         </li>
 
                     </ul>
