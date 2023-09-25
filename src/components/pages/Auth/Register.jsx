@@ -1,9 +1,9 @@
-import {useNavigate} from "react-router-dom";
-import {useFormik} from "formik";
+import { useNavigate } from "react-router-dom";
+import { useFormik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
-import {API} from "../../../constants/app";
-import {toast} from "react-toastify";
+import { API } from "../../../constants/app";
+import { toast } from "react-toastify";
 
 const Register = () => {
 
@@ -21,12 +21,12 @@ const Register = () => {
             email: Yup.string().email().required('Email Is Required'),
             password: Yup.string().required('Password Is Required'),
         }),
-        onSubmit: (values, {resetForm}) => {
+        onSubmit: (values, { resetForm }) => {
             axios.post(`${API}/users`, values)
                 .then((response) => {
                     toast.success("Registration Successfully.");
-                    resetForm({values: ''});
-                    navigate('/', {replace: true});
+                    resetForm({ values: '' });
+                    navigate('/', { replace: true });
                 })
                 .catch((err) => {
                     console.log(err);
@@ -35,7 +35,7 @@ const Register = () => {
     });
 
     const loginRedirect = () => {
-        navigate('/', {replace: true});
+        navigate('/', { replace: true });
     };
 
 
@@ -48,28 +48,16 @@ const Register = () => {
                             <div className="row">
                                 <div className="col-lg-4 mx-auto">
                                     <div className="card">
-                                        <div className="card-body p-0 auth-header-box">
-                                            <div className="text-center p-3">
-                                                <a href="index.html" className="logo logo-admin">
-                                                    <img src="assets/images/document.webp" height={50} alt="logo"
-                                                         className="auth-logo"/>
-                                                </a>
-                                                <h4 className="mt-3 mb-1 fw-semibold text-white font-18">Let's Get
-                                                    Started Document Vault</h4>
-                                                <p className="text-muted  mb-0">Sign Up to continue to Document
-                                                    Vault.</p>
-                                            </div>
-                                        </div>
                                         <div className="card-body pt-0">
                                             <form className="my-4"
-                                                  onSubmit={regForm.handleSubmit}>
+                                                onSubmit={regForm.handleSubmit}>
                                                 <div className="form-group mb-2">
                                                     <label className="form-label" htmlFor="name">Name</label>
                                                     <input type="text" className="form-control" id="name"
-                                                           onChange={regForm.handleChange}
-                                                           onBlur={regForm.handleBlur}
-                                                           value={regForm.values.name}
-                                                           name="name" placeholder="Enter Your Name"/>
+                                                        onChange={regForm.handleChange}
+                                                        onBlur={regForm.handleBlur}
+                                                        value={regForm.values.name}
+                                                        name="name" placeholder="Enter Your Name" />
 
                                                     <div className="text-danger">
                                                         {
@@ -84,10 +72,10 @@ const Register = () => {
                                                 <div className="form-group mb-2">
                                                     <label className="form-label" htmlFor="email">Email</label>
                                                     <input type="text" className="form-control" id="email"
-                                                           onChange={regForm.handleChange}
-                                                           onBlur={regForm.handleBlur}
-                                                           value={regForm.values.email}
-                                                           name="email" placeholder="Enter Your Email"/>
+                                                        onChange={regForm.handleChange}
+                                                        onBlur={regForm.handleBlur}
+                                                        value={regForm.values.email}
+                                                        name="email" placeholder="Enter Your Email" />
 
                                                     <div className="text-danger">
                                                         {
@@ -102,12 +90,12 @@ const Register = () => {
                                                 {/*end form-group*/}
                                                 <div className="form-group">
                                                     <label className="form-label"
-                                                           htmlFor="password">Password</label>
+                                                        htmlFor="password">Password</label>
                                                     <input type="password" className="form-control" name="password"
-                                                           onChange={regForm.handleChange}
-                                                           onBlur={regForm.handleBlur}
-                                                           value={regForm.values.password}
-                                                           id="password" placeholder="Enter password"/>
+                                                        onChange={regForm.handleChange}
+                                                        onBlur={regForm.handleBlur}
+                                                        value={regForm.values.password}
+                                                        id="password" placeholder="Enter password" />
 
                                                     <div className="text-danger">
                                                         {
@@ -121,37 +109,18 @@ const Register = () => {
 
                                                 <div className="form-group">
                                                     <label className="form-label"
-                                                           htmlFor="userpassword">Confirm Password</label>
+                                                        htmlFor="userpassword">Confirm Password</label>
                                                     <input type="password" className="form-control" name="password"
-                                                           id="userpassword" placeholder="Enter Confirm password"/>
+                                                        id="userpassword" placeholder="Enter Confirm password" />
                                                 </div>
-
-
-                                                {/*end form-group*/}
-                                                <div className="form-group row mt-3">
-                                                    <div className="col-sm-6">
-                                                        <div className="form-check form-switch form-switch-success">
-                                                            <input className="form-check-input" type="checkbox"
-                                                                   id="customSwitchSuccess"/>
-                                                            <label className="form-check-label"
-                                                                   htmlFor="customSwitchSuccess">Remember me</label>
-                                                        </div>
-                                                    </div>
-                                                    {/*end col*/}
-                                                    <div className="col-sm-6 text-end">
-                                                        <a href="auth-recover-pw.html" className="text-muted font-13"><i
-                                                            className="dripicons-lock"/> Forgot password?</a>
-                                                    </div>
-                                                    {/*end col*/}
-                                                </div>
-                                                {/*end form-group*/}
+                                                
                                                 <div className="form-group mb-0 row">
                                                     <div className="col-12">
                                                         <div className="d-grid mt-3">
                                                             <button
                                                                 className="btn btn-primary"
                                                                 ttype="submit">Register <i
-                                                                className="fas fa-sign-in-alt ms-1"/></button>
+                                                                    className="fas fa-sign-in-alt ms-1" /></button>
                                                         </div>
                                                     </div>
                                                     {/*end col*/}
@@ -159,7 +128,7 @@ const Register = () => {
                                                 {/*end form-group*/}
                                             </form>
                                             {/*end form*/}
-                                            <hr className="hr-dashed mt-4"/>
+                                            <hr className="hr-dashed mt-4" />
                                             <div className="text-center mt-n5">
                                                 <h6 className="card-bg px-3 my-4 d-inline-block">Or Login</h6>
                                             </div>
@@ -169,8 +138,8 @@ const Register = () => {
                                                 <div className="col-12">
                                                     <div className="d-grid mt-3">
                                                         <button onClick={loginRedirect} className="btn btn-success"
-                                                                type="button">Login <i
-                                                            className="fas fa-sign-in-alt ms-1"/></button>
+                                                            type="button">Login <i
+                                                                className="fas fa-sign-in-alt ms-1" /></button>
                                                     </div>
                                                 </div>
                                                 {/*end col*/}

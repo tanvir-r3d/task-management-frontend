@@ -1,3 +1,3 @@
-export const HOST = "http://127.0.0.1:8888";
-export const API_PREFIX = "/api/v1";
+export const HOST = process.env.REACT_APP_API_HOST;
+export const API_PREFIX = process.env.REACT_APP_API_PREFIX;
 export const API = HOST + API_PREFIX;

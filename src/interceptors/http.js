@@ -5,7 +5,7 @@ let token = localStorage.getItem('token');
 
 const http = axios.create({
     baseURL: `${API}`,
-    timeout: 1000,
+    timeout: 10000,
     headers: {'Authorization': 'Bearer ' + token}
 });
 
