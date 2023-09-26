@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import {createSlice} from "@reduxjs/toolkit";
 
 export const authSlice = createSlice({
     name: 'auth',
@@ -6,9 +6,10 @@ export const authSlice = createSlice({
         email: localStorage.getItem('email'),
         token: localStorage.getItem('token'),
         isLoggedIn: !!localStorage.getItem('token'),
+        isEmailVerified: false,
     },
     reducers: {
-        login: (state, { payload }) => {
+        login: (state, {payload}) => {
             localStorage.setItem('token', payload.access_token);
             localStorage.setItem('email', payload.email);
 
@@ -17,7 +18,7 @@ export const authSlice = createSlice({
 
             state.isLoggedIn = !!localStorage.getItem('token');
         },
-        emailVerify: (state, { payload }) => {
+        emailVerify: (state, {payload}) => {
             state.isEmailVerified = !!payload.email_verified_at;
         },
         logout: (state) => {
@@ -31,6 +32,6 @@ export const authSlice = createSlice({
     }
 });
 
-export const { login, logout, emailVerify } = authSlice.actions;
+export const {login, logout, emailVerify} = authSlice.actions;
 
 export default authSlice.reducer;

@@ -1,12 +1,12 @@
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import * as Yup from "yup";
-import { API } from "../../../constants/app";
-import { useFormik } from "formik";
-import { toast } from "react-toastify";
-import { useDispatch, useSelector } from "react-redux";
-import { login } from "../../../slices/authSlice";
-import { useEffect } from "react";
+import {API} from "../../../constants/app";
+import {useFormik} from "formik";
+import {toast} from "react-toastify";
+import {useDispatch, useSelector} from "react-redux";
+import {login} from "../../../slices/authSlice";
+import {useEffect} from "react";
 import ErrorText from "../../../utility/ErrorText";
 
 const Login = () => {
@@ -23,33 +23,33 @@ const Login = () => {
             email: Yup.string().email().required('Email Is Required'),
             password: Yup.string().required('Password Is Required'),
         }),
-        onSubmit: (values, { resetForm }) => {
+        onSubmit: (values, {resetForm}) => {
             axios.post(`${API}/auth/login`, values)
                 .then((response) => {
                     if (response.status === 201) {
                         dispatch(login(response.data));
+                        navigate('/home', {replace: true});
                     }
                     toast.success("Login Successfully");
-                    resetForm({ values: '' });
+                    resetForm({values: ''});
                 })
                 .catch((err) => {
-                    console.log(err);
+                    toast.error('Credentials doesn\'t match!');
                 })
         }
     });
 
     const handleLogIn = () => {
         loginForm.handleSubmit();
-        navigate('/home', { replace: true })
     }
 
     const handleRegister = () => {
-        navigate('/register', { replace: true })
+        navigate('/register', {replace: true})
     }
 
     useEffect(() => {
         if (isLoggedIn) {
-            navigate('/home', { replace: true });
+            navigate('/home', {replace: true});
         }
     }, [isLoggedIn, navigate]);
 
@@ -71,30 +71,30 @@ const Login = () => {
                                                 <div className="form-group mb-2">
                                                     <label className="form-label" htmlFor="email">Email</label>
                                                     <input type="email" className="form-control" id="email"
-                                                        onChange={loginForm.handleChange}
-                                                        onBlur={loginForm.handleBlur}
-                                                        value={loginForm.values.email}
-                                                        name="email" placeholder="Enter Your Email" />
-                                                    <ErrorText form={loginForm} field={'email'} />
+                                                           onChange={loginForm.handleChange}
+                                                           onBlur={loginForm.handleBlur}
+                                                           value={loginForm.values.email}
+                                                           name="email" placeholder="Enter Your Email"/>
+                                                    <ErrorText form={loginForm} field={'email'}/>
                                                 </div>
                                                 {/*end form-group*/}
                                                 <div className="form-group">
                                                     <label className="form-label"
-                                                        htmlFor="password">Password</label>
+                                                           htmlFor="password">Password</label>
                                                     <input type="password" className="form-control" name="password"
-                                                        onChange={loginForm.handleChange}
-                                                        onBlur={loginForm.handleBlur}
-                                                        value={loginForm.values.password}
-                                                        id="password" placeholder="Enter password" />
-                                                    <ErrorText form={loginForm} field={'password'} />
+                                                           onChange={loginForm.handleChange}
+                                                           onBlur={loginForm.handleBlur}
+                                                           value={loginForm.values.password}
+                                                           id="password" placeholder="Enter password"/>
+                                                    <ErrorText form={loginForm} field={'password'}/>
                                                 </div>
                                                 <div className="form-group mb-0 row">
                                                     <div className="col-12">
                                                         <div className="d-grid mt-3">
                                                             <button onClick={handleLogIn}
-                                                                className="btn btn-primary"
-                                                                type="button">Log In <i
-                                                                    className="fas fa-sign-in-alt ms-1" /></button>
+                                                                    className="btn btn-primary"
+                                                                    type="button">Log In <i
+                                                                className="fas fa-sign-in-alt ms-1"/></button>
                                                         </div>
                                                     </div>
                                                     {/*end col*/}

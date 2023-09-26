@@ -1,17 +1,19 @@
-import { useEffect, useState } from "react";
-import { postVerificationCode, postVerificationMail } from "../../../actions/coreApiActions";
-import { ToastContainer, toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { logout } from "../../../slices/authSlice";
+import {useEffect, useState} from "react";
+import {postVerificationCode, postVerificationMail} from "../../../actions/coreApiActions";
+import {toast, ToastContainer} from "react-toastify";
+import {useNavigate} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {logout} from "../../../slices/authSlice";
 
-const Verify = ({ checkIsLoggedIn }) => {
+const Verify = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [isMailSend, setIsMailSend] = useState(false);
+    const [sendingMail, setSendingMail] = useState(false);
     const [code, setCode] = useState('');
 
     const handleVerificationMailSend = () => {
+        setSendingMail(true);
         postVerificationMail()
             .then(response => {
                 toast.success(response.message);
@@ -20,19 +22,22 @@ const Verify = ({ checkIsLoggedIn }) => {
             .catch(error => {
                 toast.error('Something went wrong.')
                 console.error(error);
-            });
+            })
+            .finally(() => setSendingMail(false));
     }
 
     const handleLogOut = () => {
         dispatch(logout());
-        navigate('/', { replace: true })
+        navigate('/', {replace: true})
     }
 
     const checkVerificationCode = () => {
-        postVerificationCode({ code })
+        postVerificationCode({code})
             .then(response => {
-                toast.success(response.message);
-                checkIsLoggedIn();
+                if (response?.code == 200) {
+                    toast.success(response.message);
+                    window.location.reload();
+                }
             })
             .catch(error => {
                 if (error?.status == 406) {
@@ -41,12 +46,12 @@ const Verify = ({ checkIsLoggedIn }) => {
             })
     }
 
-    useEffect(() => {
-        navigate('/', { replace: true });
-    }, []);
+    // useEffect(() => {
+    //     navigate('/', {replace: true});
+    // }, []);
 
     return <>
-        <ToastContainer />
+        <ToastContainer/>
         <div className="container-md">
             <div className="row vh-100 d-flex justify-content-center">
                 <div className="col-12 align-self-center">
@@ -66,9 +71,9 @@ const Verify = ({ checkIsLoggedIn }) => {
                                                     <strong>Code</strong>
                                                 </label>
                                                 <input type="text" className="form-control" id="code"
-                                                    name="code" placeholder="Enter verification code"
-                                                    value={code}
-                                                    onChange={e => setCode(e.target.value)}
+                                                       name="code" placeholder="Enter verification code"
+                                                       value={code}
+                                                       onChange={e => setCode(e.target.value)}
                                                 />
                                             </>}
                                         </div>
@@ -76,18 +81,22 @@ const Verify = ({ checkIsLoggedIn }) => {
                                         <div className="form-group mb-0 row">
                                             <div className="col-12">
                                                 <div className="d-grid mt-3">
-                                                    {isMailSend ? <button
-                                                        onClick={checkVerificationCode}
-                                                        className="btn btn-primary"
-                                                        type="button">Log In
-                                                        <i className="fas fa-sign-in-alt ms-1" />
-                                                    </button> : <>
-                                                        <button className="btn btn-primary" type="button"
-                                                            onClick={handleVerificationMailSend}
+                                                    {isMailSend ?
+                                                        <button
+                                                            onClick={checkVerificationCode}
+                                                            className="btn btn-primary"
+                                                            type="button"
                                                         >
-                                                            Send Verification Mail
-                                                        </button>
-                                                    </>}
+                                                            Log In
+                                                            <i className="fas fa-sign-in-alt ms-1"/>
+                                                        </button> : <>
+                                                            <button className="btn btn-primary" type="button"
+                                                                    onClick={handleVerificationMailSend}
+                                                                    disabled={sendingMail}
+                                                            >
+                                                                {sendingMail ? 'Sending...' : 'Send Verification Mail'}
+                                                            </button>
+                                                        </>}
                                                 </div>
                                             </div>
                                             {/*end col*/}
@@ -98,9 +107,9 @@ const Verify = ({ checkIsLoggedIn }) => {
                                         <div className="m-3 text-center text-muted">
                                             <button
                                                 onClick={handleLogOut}
-                                                className="btn btn-primary"
+                                                className="btn btn-primary" disabled={sendingMail}
                                                 type="button">Log Out
-                                                <i className="fas fa-sign-out-alt ms-1" />
+                                                <i className="fas fa-sign-out-alt ms-1"/>
                                             </button>
                                         </div>
                                     </div>
