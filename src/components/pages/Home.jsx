@@ -1,4 +1,21 @@
+import {getTotalNumberofTask} from "../../actions/commonApiActions";
+import {useEffect, useState} from "react";
+
 const Home = () => {
+    const [totalNumberOfTask, setTotalNumberOfTask] = useState(0);
+    const getTotalNumberOfTask = () => {
+        getTotalNumberofTask()
+            .then((response) => {
+                setTotalNumberOfTask(response.data.total_task);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }
+
+    useEffect(() => {
+        getTotalNumberOfTask();
+    }, []);
     return (
         <>
             {/* Page-Title */}
@@ -21,13 +38,13 @@ const Home = () => {
                                     <div className="row d-flex justify-content-center">
                                         <div className="col-9">
                                             <p className="text-dark mb-0 fw-semibold">Total Task</p>
-                                            <h3 className="my-1 font-20 fw-bold">0</h3>
+                                            <h3 className="my-1 font-20 fw-bold">{totalNumberOfTask}</h3>
                                         </div>
                                         {/*end col*/}
                                         <div className="col-3 align-self-center">
                                             <div
                                                 className="d-flex justify-content-center align-items-center thumb-md bg-light-alt rounded-circle mx-auto">
-                                                <i className="ti ti-users font-24 align-self-center text-muted"/>
+                                                <i className="ti ti-circles font-24 align-self-center text-muted"/>
                                             </div>
                                         </div>
                                         {/*end col*/}

@@ -49,7 +49,8 @@ const TaskList = ({handleRowClick, loadTaskList}) => {
                                         </span>
                                 </td>
                                 <td>
-                                    <DeleteButton deleteId={task.id}/>
+                                    {task.can_edit && <DeleteButton deleteId={task.id}/>}
+
                                 </td>
                             </tr>
                         </>)

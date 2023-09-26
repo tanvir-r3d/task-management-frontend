@@ -11,6 +11,7 @@ import {useEffect, useState} from "react";
 const TaskEditForm = ({toggleEditFormModal, editFormModal, taskEdit, editId, loadTaskList}) => {
     const [commentField, setCommentField] = useState('');
     const [commentList, setCommentList] = useState([]);
+    const [canEdit, setCanEdit] = useState(false);
 
     const form = useFormik({
         initialValues: {
@@ -37,6 +38,7 @@ const TaskEditForm = ({toggleEditFormModal, editFormModal, taskEdit, editId, loa
     useEffect(() => {
         form.setValues({...taskEdit});
         form.setFieldValue('assignees', taskEdit?.assignee_users);
+        setCanEdit(taskEdit.can_edit);
     }, [taskEdit]);
 
     const onCommentSubmit = () => {
@@ -68,37 +70,47 @@ const TaskEditForm = ({toggleEditFormModal, editFormModal, taskEdit, editId, loa
                     <div className="col-md-8 row">
                         <div className="col-md-4">
                             <label htmlFor="ticolourOptionstle"><strong>Title</strong></label>
-                            <input type="text"
-                                   name="title"
-                                   className="form-control"
-                                   id="title"
-                                   onChange={form.handleChange}
-                                   onBlur={form.handleBlur}
-                                   value={form.values.title}
-                            />
+                            {canEdit ?
+                                <input type="text"
+                                       name="title"
+                                       className="form-control"
+                                       id="title"
+                                       onChange={form.handleChange}
+                                       onBlur={form.handleBlur}
+                                       value={form.values.title}
+                                />
+                                : <p>{taskEdit.title}</p>}
                         </div>
                         <div className="col-md-4">
                             <label htmlFor="assignees"><strong>Assign To</strong></label>
-                            <UserMultiSelect
-                                onChange={value => form.setFieldValue('assignees', value)}
-                                value={form.values.assignees}
-                            />
+                            {canEdit ?
+                                <UserMultiSelect
+                                    onChange={value => form.setFieldValue('assignees', value)}
+                                    value={form.values.assignees}
+                                />
+                                : <p>{taskEdit?.assignee_users?.map(x => x.label).join(', ')}</p>}
                         </div>
 
                         <div className="col-md-4">
                             <label htmlFor="status_id"><strong>Status</strong></label>
-                            <StatusSelect
-                                onChange={value => form.setFieldValue('status_id', value)}
-                                value={form.values.status_id}
-                            />
+                            {canEdit ?
+                                <StatusSelect
+                                    onChange={value => form.setFieldValue('status_id', value)}
+                                    value={form.values.status_id}
+                                /> :
+                                <p>{taskEdit.status.name}</p>
+                            }
                         </div>
 
                         <div className="col-md-12">
                             <label htmlFor="description"><strong>Description</strong></label>
-                            <TextEditor
-                                value={form.values.description}
-                                onChange={value => form.setFieldValue('description', value)}
-                            />
+                            {canEdit ?
+                                <TextEditor
+                                    value={form.values.description}
+                                    onChange={value => form.setFieldValue('description', value)}
+                                /> :
+                                <p>{taskEdit.description}</p>
+                            }
                         </div>
                     </div>
                     <div className="col-md-4">
